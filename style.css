@@ -22,5 +22,5 @@
     object-fit: cover;
     object-position: center;
     will-change: transform;
-    transform: scale(.5);
+    transform: scale(.1) rotate(-240deg);
 }

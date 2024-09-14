@@ -13,7 +13,8 @@ const image = document.querySelector('img')
 
 window.addEventListener('scroll', () => {
     let portion = getScrollPortion(heroSection)
-    // console.log(portion)
-    portion = Math.abs(portion) / 2 + 0.5 // 0.5 ~ 1
-    image.style.transform = `scale(${portion})`
+    let scale = Math.abs(portion) < 0.1 ? 0.1 : Math.abs(portion) // 0.1 ~ 1
+    let rotate = Math.floor((1 + portion) * -240) // -240 ~ 0
+
+    image.style.transform = `scale(${scale}) rotate(${rotate}deg)`
 })
