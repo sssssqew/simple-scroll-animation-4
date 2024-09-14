@@ -3,6 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+html, body{
+    scroll-behavior: smooth;
+}
 #hero{
     position: relative;
     width: 100%;
@@ -15,6 +18,7 @@
 }
 .image-container{
     height: 100%;
+    overflow: hidden;
 }
 .image-container img{
     width: 100%;
