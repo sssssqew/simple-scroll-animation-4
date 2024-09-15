@@ -9,7 +9,7 @@ function createSlides(slides){
         slideElement.classList.add('slide', slide.pos)
         slideElement.innerHTML = `        
             <div class="slide-img">
-                <img src="${slide.image}" alt="">
+                <img src="${slide.image}" alt="${slide.image}">
             </div>
             <div class="slide-text">
                 <p>${slide.name}</p>
@@ -19,11 +19,17 @@ function createSlides(slides){
         slider.appendChild(slideElement)
     })
 }
-// check and get maximum range of slide width
+// check and get maximum range of sliding distance for slider 
 function getRangeOfSlideWidth(slideRange){
      return window.innerWidth > 1100 ? 
             slideRange.desktop : window.innerWidth > 600 ?
             slideRange.tablet : slideRange.mobile
+}
+// get maximum range of sliding distance for image 
+function getRangeOfSlideImage(img){
+    let slideImgWidth = img.offsetWidth
+    let slideContainerWidth = img.parentElement.offsetWidth
+    return (slideImgWidth - slideContainerWidth) / 2
 }
 
 // animation functions
@@ -32,20 +38,26 @@ function animateImage(){
     currentPos.hero = lerp(currentPos.hero, target, 0.1)
     let scale = Math.abs(currentPos.hero) < 0.1 ? 0.1 : Math.abs(currentPos.hero) // 0.1 ~ 1
     let rotate = (1 + currentPos.hero) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
-    image.style.transform = `scale(${scale}) rotate(${rotate}deg)`
+    heroImg.style.transform = `scale(${scale}) rotate(${rotate}deg)`
 }
 function animateAbout(){
     if(isTouchedOnBrowser(aboutSection, window.innerHeight * 0.1)){
         aboutContainer.classList.add('active')
     }
 }
+function animateSlideImgs(){
+    slideImgs.forEach((slideImg, idx) => {
+        let left = parseFloat(((1 + currentPos.projects) * -getRangeOfSlideImage(slideImg)).toFixed(1)) // -30 ~ 0 / use toFixed function to enhance performance
+        slideImg.style.left = `${left}px`
+    })
+}
 function animateSlider(){
     let target = getScrollPortion(projectSection)
-    currentPos.projects = lerp(currentPos.projects, target, 0.1)
+    currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
     let translateX = currentPos.projects * getRangeOfSlideWidth(slideRange)
-    console.log(translateX)
+    
     slider.style.transform = `translateX(${translateX}vw)`
-
+    animateSlideImgs()
 }
 function animate(){
     animateImage()
@@ -56,7 +68,7 @@ function animate(){
 
 // hero section
 const heroSection = document.getElementById('hero')
-const image = document.querySelector('img')
+const heroImg = document.querySelector('.hero-img img')
 
 // about section
 const aboutSection = document.getElementById('about')
@@ -66,6 +78,7 @@ const aboutContainer = document.querySelector('.about-container')
 const projectSection = document.getElementById('projects')
 const slider = document.querySelector('.slider')
 createSlides(projects)
+const slideImgs = document.querySelectorAll('.slide img')
 
 
 // positions of sections 

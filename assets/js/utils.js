@@ -21,5 +21,5 @@ function lerp(start, end, t){
 export {
     getScrollPortion,
     isTouchedOnBrowser,
-    lerp
+    lerp,
 }
