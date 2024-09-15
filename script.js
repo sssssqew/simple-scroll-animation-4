@@ -73,7 +73,7 @@ const currentPos = { // 추후 확장
     hero: 0, // current position of heroSection 
     projects: 0
 }
-// slide width range
+// ranges of slide width depending on device size 
 const slideRange = {
     desktop: 100,
     tablet: 300,
