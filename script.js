@@ -45,10 +45,12 @@ function animateAbout(){
         aboutContainer.classList.add('active')
     }
 }
-function animateSlideImgs(){
+function animateSlideImgs(target, current){
+    let skewDiff = ((target - current) * 50).toFixed(3) 
     slideImgs.forEach((slideImg, idx) => {
         let left = parseFloat(((1 + currentPos.projects) * -getRangeOfSlideImage(slideImg)).toFixed(1)) // -30 ~ 0 / use toFixed function to enhance performance
         slideImg.style.left = `${left}px`
+        slideImg.parentElement.style.transform = `skewX(${skewDiff}deg)`
     })
 }
 function animateSlider(){
@@ -57,7 +59,7 @@ function animateSlider(){
     let translateX = currentPos.projects * getRangeOfSlideWidth(slideRange)
     
     slider.style.transform = `translateX(${translateX}vw)`
-    animateSlideImgs()
+    animateSlideImgs(target, currentPos.projects)
 }
 function animate(){
     animateImage()
