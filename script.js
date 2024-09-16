@@ -1,5 +1,6 @@
 import { 
     getScrollPortion, 
+    getScrollAmount,
     getScrollBarWidth, 
     converPxToViewport,
     isTouchedOnBrowser, 
@@ -25,12 +26,7 @@ function createSlides(slides){
         slider.appendChild(slideElement)
     })
 }
-// check and get maximum range of sliding distance for slider 
-function getRangeOfSlideWidth(slideRange){
-     return window.innerWidth > 1100 ? 
-            slideRange.desktop : window.innerWidth > 600 ?
-            slideRange.tablet : slideRange.mobile
-}
+
 // get maximum range of sliding distance for image 
 function getRangeOfSlideImage(img){
     let slideImgWidth = img.offsetWidth
@@ -61,9 +57,8 @@ function animateSlideImgs(target, current){
 }
 function animateSlider(){
     let target = getScrollPortion(projectSection)
-    console.log(target, currentPos.projects)
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = currentPos.projects * (getRangeOfSlideWidth(slideRange) + converPxToViewport(getScrollBarWidth())) // should slide more by the amount of scrollbar width
+    let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection)) // should slide more by the amount of scrollbar width
     
     slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)
@@ -94,12 +89,6 @@ const slideImgs = document.querySelectorAll('.slide img')
 const currentPos = { // 추후 확장
     hero: 0, // current position of heroSection 
     projects: 0
-}
-// ranges of slide width depending on device size 
-const slideRange = {
-    desktop: 100,
-    tablet: 300,
-    mobile: 700 
 }
 
 animate()

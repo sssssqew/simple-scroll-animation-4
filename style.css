@@ -70,7 +70,7 @@ html, body{
     position: relative;
     width: 100%;
     height: 200vh;
-    border: 3px solid blue;
+    /* border: 3px solid blue; */
 }
 .slider-container{
     height: 100%;
@@ -141,6 +141,7 @@ html, body{
     position: relative;
     width: 100%;
     height: 100vh; 
+    background-attachment: fixed;
 }
 .identity-container{
     height: 100%; 
