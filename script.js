@@ -1,4 +1,10 @@
-import { getScrollPortion, isTouchedOnBrowser, lerp } from "./assets/js/utils.js"
+import { 
+    getScrollPortion, 
+    getScrollBarWidth, 
+    converPxToViewport,
+    isTouchedOnBrowser, 
+    lerp 
+} from "./assets/js/utils.js"
 import { projects } from "./assets/js/list.js"
 
 // create slides
@@ -55,8 +61,9 @@ function animateSlideImgs(target, current){
 }
 function animateSlider(){
     let target = getScrollPortion(projectSection)
+    console.log(target, currentPos.projects)
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = currentPos.projects * getRangeOfSlideWidth(slideRange)
+    let translateX = currentPos.projects * (getRangeOfSlideWidth(slideRange) + converPxToViewport(getScrollBarWidth())) // should slide more by the amount of scrollbar width
     
     slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)

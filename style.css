@@ -6,6 +6,9 @@
 html, body{
     scroll-behavior: smooth;
 }
+/* body::-webkit-scrollbar{
+    display: none;
+} */
 .sticky{
     position: sticky; top: 0;
     height: 100vh;
@@ -67,6 +70,7 @@ html, body{
     position: relative;
     width: 100%;
     height: 200vh;
+    border: 3px solid blue;
 }
 .slider-container{
     height: 100%;
@@ -77,16 +81,16 @@ html, body{
     height: 100%; 
     overflow: hidden;
     width: min-content;
-    padding: 1rem;
     display: flex;
     justify-content: flex-start;
     will-change: transform;
 }
 .slide{
     height: 100%;
-    width: 25vw;
+    width: 25vw; /* cutoff of last slide because of scrollbar */
     display: flex;
     flex-direction: column;
+    padding: 1rem;
     /* border: 3px solid red; */
 }
 .slide-img{
@@ -131,6 +135,27 @@ html, body{
 .end{
     justify-content: flex-end;
 }
+
+/* identity section */
+#identity{
+    position: relative;
+    width: 100%;
+    height: 100vh; 
+}
+.identity-container{
+    height: 100%; 
+    text-transform: uppercase;
+    will-change: transform;
+    transition: .5s ease-in;
+}
+/* .about-text{
+    color: white;
+}
+.about-container.active{
+    width: 100%;
+    background-color: black;
+} */
+
 
 @media screen and (max-width: 1100px){
     #projects{
