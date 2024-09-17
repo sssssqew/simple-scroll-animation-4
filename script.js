@@ -56,9 +56,10 @@ function animateSlideImgs(target, current){
     })
 }
 function animateSlider(){
-    let target = getScrollPortion(projectSection)
+    let enableScrollBarWidth = true // it has vertical scrollbar when scrolling horizontally, so slider should move more by the amount of scrollbar width
+    let target = getScrollPortion(projectSection, enableScrollBarWidth)
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection)) // should slide more by the amount of scrollbar width
+    let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection, enableScrollBarWidth)) 
     
     slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)
@@ -83,6 +84,7 @@ const projectSection = document.getElementById('projects')
 const slider = document.querySelector('.slider')
 createSlides(projects)
 const slideImgs = document.querySelectorAll('.slide img')
+
 
 
 // positions of sections 

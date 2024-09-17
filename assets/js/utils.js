@@ -1,16 +1,16 @@
 // utils functions 
-function getScrollPortion(element){ // if element has sticky sections, use this function
+function getScrollPortion(element, enableScrollBarWidth = false){ // if element has sticky sections, use this function
     let portion = 0
     let {top} = element.getBoundingClientRect()
 
     if(top <= 0){
-        portion = top / getScrollAmount(element) 
+        portion = top / getScrollAmount(element, enableScrollBarWidth) 
         portion = portion < -1 ? -1 : portion // 0 ~ -1  
     }
     return portion
 }
-function getScrollAmount(element){
-    return element.scrollHeight - window.innerHeight + getScrollBarWidth() // compensate by the amount of scrollbar width
+function getScrollAmount(element, enableScrollBarWidth){
+    return element.scrollHeight - window.innerHeight + (enableScrollBarWidth ? getScrollBarWidth() : 0) // compensate by the amount of scrollbar width
 }
 function getScrollBarWidth(){
     return window.innerWidth - document.documentElement.offsetWidth
