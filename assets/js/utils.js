@@ -31,6 +31,10 @@ function lerp(start, end, t){
     return start * (1 - t) + end * t
 }
 
+function delay(duration){
+    return new Promise(resolve => setTimeout(() => resolve('성공'), duration))
+}
+
 export {
     getScrollPortion,
     getScrollAmount,
@@ -38,4 +42,5 @@ export {
     converPxToViewport,
     isTouchedOnBrowser,
     lerp,
+    delay
 }

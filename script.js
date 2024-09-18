@@ -4,11 +4,10 @@ import {
     getScrollBarWidth, 
     converPxToViewport,
     isTouchedOnBrowser, 
-    lerp 
+    lerp,
+    delay
 } from "./assets/js/utils.js"
 import { projects } from "./assets/js/list.js"
-
-
 
 
 /////////////////// global variables ///////////////////////////////////
@@ -125,7 +124,7 @@ function animateImage(){
     let rotate = (1 + currentPos.hero) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
     heroImg.style.transform = `scale(${scale}) rotate(${rotate}deg)`
 }
-function animateAbout(){
+async function animateAbout(){
     if(isTouchedOnBrowser(aboutSection, window.innerHeight * 0.1)){
         aboutContainer.classList.add('active')
     }
@@ -149,7 +148,6 @@ function animateSlider(){
 }
 function animateIdentity(){
     if(isTouchedOnBrowser(identitySection, window.innerHeight * 0.3)){
-        identityContainer.classList.add('active')
         identityLetters.forEach((letter, idx) => {
             setTimeout(() => {
                 letter.classList.add('active')
