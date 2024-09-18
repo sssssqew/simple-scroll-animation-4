@@ -8,6 +8,50 @@ import {
 } from "./assets/js/utils.js"
 import { projects } from "./assets/js/list.js"
 
+
+
+
+/////////////////// global variables ///////////////////////////////////
+
+// positions of sections 
+const currentPos = { // 추후 확장
+    hero: 0, // current position of heroSection 
+    projects: 0
+}
+let tagOptions = [
+    {key: 'the', tag: '<br/>'},
+    {key: 'future', tag: '<br/>'},
+]
+
+
+//////////////////////// dom serarch ///////////////////////////////
+
+// hero section
+const heroSection = document.getElementById('hero')
+const heroImg = heroSection.querySelector('.hero-img img')
+
+// about section
+const aboutSection = document.getElementById('about')
+const aboutContainer = aboutSection.querySelector('.about-container')
+
+// projects section
+const projectSection = document.getElementById('projects')
+const slider = projectSection.querySelector('.slider')
+createSlides(projects)
+const slideImgs = slider.querySelectorAll('.slide img')
+
+// identity section
+const identitySection = document.getElementById('identity')
+const identityContainer = identitySection.querySelector('.identity-container')
+const identityText = identityContainer.querySelector('.identity-text')
+tagOptions = searchPosOfAddTagOnText(identityText, tagOptions)
+identityText.innerHTML = sliceText(identityText, tagOptions)
+const identityLetters = identityText.querySelectorAll('span')
+console.log(identityLetters)
+
+
+//////////////////// application functions ////////////////////////
+
 // create slides
 function createSlides(slides){
     const slider = document.querySelector('.slider')
@@ -34,7 +78,46 @@ function getRangeOfSlideImage(img){
     return (slideImgWidth - slideContainerWidth) / 2
 }
 
-// animation functions
+// slice into letter and wrap in span tag 
+function sliceText(element, options){
+    let text = element.innerText.split('')
+    text = text.reduce((newText, letter, idx) => {
+        newText = addTagOnText(newText, options, idx)
+        newText += `<span>${letter}</span>`
+        return newText
+    }, '')
+    return text 
+}
+// search some positions on text to add tag
+function searchPosOfAddTagOnText(element, options){
+    let text = element.innerText.toLowerCase()
+
+    options.forEach(option => {
+        option.indexes = []
+        let key = option.key.toLowerCase()
+        let searchedIndex = text.indexOf(key)
+        while(searchedIndex !== -1){
+            option.indexes.push(searchedIndex)
+            searchedIndex = text.indexOf(key, searchedIndex + key.length + option.tag.length)
+        }
+    })
+    return options
+}
+// add some tag at some position on text
+function addTagOnText(text, options, idx){
+    options.forEach(option => {
+        if(option.indexes.includes(idx)){
+            text += option.tag
+        }
+    })
+    return text
+}
+
+
+
+
+/////////////// animation functions //////////////////////
+
 function animateImage(){
     let target = getScrollPortion(heroSection)
     currentPos.hero = lerp(currentPos.hero, target, 0.1)
@@ -64,33 +147,26 @@ function animateSlider(){
     slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)
 }
+function animateIdentity(){
+    if(isTouchedOnBrowser(identitySection, window.innerHeight * 0.3)){
+        identityContainer.classList.add('active')
+        identityLetters.forEach((letter, idx) => {
+            setTimeout(() => {
+                letter.classList.add('active')
+            }, idx * 30)
+        })
+
+    }
+}
 function animate(){
     animateImage()
     animateAbout()
     animateSlider()
+    animateIdentity()
     requestAnimationFrame(animate)
 }
-
-// hero section
-const heroSection = document.getElementById('hero')
-const heroImg = document.querySelector('.hero-img img')
-
-// about section
-const aboutSection = document.getElementById('about')
-const aboutContainer = document.querySelector('.about-container')
-
-// projects section
-const projectSection = document.getElementById('projects')
-const slider = document.querySelector('.slider')
-createSlides(projects)
-const slideImgs = document.querySelectorAll('.slide img')
-
-
-
-// positions of sections 
-const currentPos = { // 추후 확장
-    hero: 0, // current position of heroSection 
-    projects: 0
-}
-
 animate()
+
+
+
+
