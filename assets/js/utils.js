@@ -26,6 +26,9 @@ function isTouchedOnBrowser(element, threshold = 0){ // if element has no sticky
     let {top} = element.getBoundingClientRect()
     return top <= threshold
 }
+function getDistance(x1, y1, x2,y2){
+    return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
+}
 
 function lerp(start, end, t){
     return start * (1 - t) + end * t
@@ -35,12 +38,14 @@ function delay(duration){
     return new Promise(resolve => setTimeout(() => resolve('성공'), duration))
 }
 
+
 export {
     getScrollPortion,
     getScrollAmount,
     getScrollBarWidth,
     converPxToViewport,
     isTouchedOnBrowser,
+    getDistance,
     lerp,
     delay
 }

@@ -4,6 +4,7 @@ import {
     getScrollBarWidth, 
     converPxToViewport,
     isTouchedOnBrowser, 
+    getDistance,
     lerp,
     delay
 } from "./assets/js/utils.js"
@@ -15,7 +16,7 @@ import { projects } from "./assets/js/list.js"
 // positions of sections 
 const currentPos = { // 추후 확장
     hero: 0, // current position of heroSection 
-    projects: 0
+    projects: 0,
 }
 let tagOptions = [
     {key: 'the', tag: '<br/>'},
@@ -46,7 +47,7 @@ const identityText = identityContainer.querySelector('.identity-text')
 tagOptions = searchPosOfAddTagOnText(identityText, tagOptions)
 identityText.innerHTML = sliceText(identityText, tagOptions)
 const identityLetters = identityText.querySelectorAll('span')
-console.log(identityLetters)
+// console.log(identityLetters)
 
 
 //////////////////// application functions ////////////////////////
@@ -112,6 +113,21 @@ function addTagOnText(text, options, idx){
     return text
 }
 
+/////////////// even listeners ///////////////////////
+function move3dText(e){
+    identityLetters.forEach((letter, idx) => {  
+        const {left, top, width, height} = letter.getBoundingClientRect()
+        const middleX = left + width / 2
+        const middleY = top + height / 2
+        const dist = getDistance(e.clientX, e.clientY, middleX, middleY)
+       
+        const power = 300000
+        let translatez = power * (1 / (dist + 1)); // dist가 작을수록 가중치 증가
+        translatez = translatez > 2000 ? 2000 : translatez < 0 ? 0 : translatez
+        letter.style.transform = `perspective(3000px) translatez(${parseFloat(translatez.toFixed(1))}px)  `
+    })
+}
+
 
 
 
@@ -153,7 +169,10 @@ function animateIdentity(){
                 letter.classList.add('active')
             }, idx * 30)
         })
-
+        setTimeout(() => {
+            identityText.classList.add('active')
+            window.addEventListener('mousemove', move3dText)
+        }, identityLetters.length * 50)
     }
 }
 function animate(){
