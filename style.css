@@ -152,15 +152,19 @@ html, body{
     white-space: pre;
     overflow: hidden;
     line-height: 2;
+    z-index: 1;
 }
 .identity-text.active{
-    overflow: visible;
+    overflow-y:visible; /* for text 3d effect working to y-axis */
+    overflow-x:clip; /* prevent scroll from enabling */
 }
 .identity-text span{
     display: inline-block; /* span is not originally expanding */
     margin: 0 2rem;
     opacity: 0;
     color: white;
+    user-select: none;
+    pointer-events: none;
     transform: translateY(100%);
     transition: .5s ease-out;
     will-change: transform;
@@ -188,6 +192,14 @@ html, body{
     }
     .slide{
         width: 100vw;
+    }
+    .identity-text span{
+        margin: 0 .8rem;
+    }
+}
+@media screen and (max-width: 300px){ /* galaxy fold */
+    .identity-text span{
+        margin: 0 .6rem;
     }
 }
 

@@ -83,7 +83,7 @@ function sliceText(element, options){
     let text = element.innerText.split('')
     text = text.reduce((newText, letter, idx) => {
         newText = addTagOnText(newText, options, idx)
-        newText += `<span>${letter}</span>`
+        newText += `<span class="text">${letter}</span>`
         return newText
     }, '')
     return text 
@@ -117,14 +117,11 @@ function addTagOnText(text, options, idx){
 function move3dText(e){
     identityLetters.forEach((letter, idx) => {  
         const {left, top, width, height} = letter.getBoundingClientRect()
-        const middleX = left + width / 2
-        const middleY = top + height / 2
-        const dist = getDistance(e.clientX, e.clientY, middleX, middleY)
-       
-        const power = 300000
-        let translatez = power * (1 / (dist + 1)); // dist가 작을수록 가중치 증가
+        const dist = getDistance(e.clientX, e.clientY, left + width / 2, top + height / 2)
+        
+        let translatez = 300000 * (1 / (dist + 1)); // dist가 작을수록 가중치 증가
         translatez = translatez > 2000 ? 2000 : translatez < 0 ? 0 : translatez
-        letter.style.transform = `perspective(3000px) translatez(${parseFloat(translatez.toFixed(1))}px)  `
+        letter.style.transform = `perspective(3000px) translateX(50px) translateY(-100px) translateZ(${parseFloat(translatez.toFixed(1))}px)`
     })
 }
 
@@ -171,7 +168,7 @@ function animateIdentity(){
         })
         setTimeout(() => {
             identityText.classList.add('active')
-            window.addEventListener('mousemove', move3dText)
+            identitySection.addEventListener('mousemove', move3dText)
         }, identityLetters.length * 50)
     }
 }
