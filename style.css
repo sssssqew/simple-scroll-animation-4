@@ -6,14 +6,14 @@
 html, body{
     scroll-behavior: smooth;
     width: 100%;
-    height: 100svh;
+    height: calc(var(--vh, 1vh) * 100);
 }
 /* body::-webkit-scrollbar{
     display: none;
 } */
 .sticky{
     position: sticky; top: 0;
-    height: 100svh;
+    height: calc(var(--vh, 1vh) * 100);
 }
 .text{
     font-size: clamp(2rem, 10cqi, 10rem);
@@ -28,7 +28,7 @@ html, body{
 #hero{
     position: relative;
     width: 100%;
-    height: 200svh;
+    height: calc(var(--vh, 1vh) * 200);
     /* border: 1px solid red; */
 }
 
@@ -49,7 +49,7 @@ html, body{
 #about{
     position: relative;
     width: 100%;
-    height: 100svh;
+    height: calc(var(--vh, 1vh) * 100);
 }
 .about-container{
     position: absolute;
@@ -71,7 +71,7 @@ html, body{
 #projects{
     position: relative;
     width: 100%;
-    height: 200svh;
+    height: calc(var(--vh, 1vh) * 200);
     /* border: 3px solid blue; */
 }
 .slider-container{
@@ -142,7 +142,7 @@ html, body{
 #identity{
     position: relative;
     width: 100%;
-    height: 100svh; 
+    height: calc(var(--vh, 1vh) * 100); 
     background-color: black;
 }
 .identity-container{
@@ -184,7 +184,7 @@ html, body{
 
 @media screen and (max-width: 1100px){
     #projects{
-        height: 400svh;
+        height: calc(var(--vh, 1vh) * 400);
     }
     .slide{
         width: 50svw;
@@ -192,7 +192,7 @@ html, body{
 }
 @media screen and (max-width: 600px){
     #projects{
-        height: 800svh;
+        height: calc(var(--vh, 1vh) * 800);
     }
     .slide{
         width: 100svw;
