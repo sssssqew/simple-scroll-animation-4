@@ -180,7 +180,12 @@ html, body{
     transition: .5s ease-out;
 }
 
-
+@media all and (display-mode: fullscreen) {
+    body {
+      margin: 0;
+      border: 5px solid black;
+    }
+}
 
 @media screen and (max-width: 1100px){
     #projects{
