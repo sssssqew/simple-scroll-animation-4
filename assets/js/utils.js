@@ -23,7 +23,7 @@ function converPxToViewport(px, option = 'vh'){
     } 
 }
 function isTouchedOnBrowser(element, threshold = 0){ // if element has no sticky sections 
-    let {top} = element.getBoundingClientRect()
+    let {top} = element.getBoundingClientRect()  
     return top <= threshold
 }
 function getDistance(x1, y1, x2,y2){

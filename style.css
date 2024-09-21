@@ -6,14 +6,17 @@
 html, body{
     scroll-behavior: smooth;
     width: 100%;
-    height: 100svh;
+    height: 100%;
+}
+main{
+    width: 100%;
+    height: 100%;
 }
 /* body::-webkit-scrollbar{
     display: none;
 } */
 .sticky{
     position: sticky; top: 0;
-    height: 100svh;
 }
 .text{
     font-size: clamp(2rem, 10cqi, 10rem);
@@ -28,8 +31,11 @@ html, body{
 #hero{
     position: relative;
     width: 100%;
-    height: 200svh;
+    height: 200%;
     /* border: 1px solid red; */
+}
+.hero-height{
+    height: 50%;
 }
 
 .hero-img{
@@ -49,7 +55,7 @@ html, body{
 #about{
     position: relative;
     width: 100%;
-    height: 100svh;
+    height: 100%;
 }
 .about-container{
     position: absolute;
@@ -71,8 +77,11 @@ html, body{
 #projects{
     position: relative;
     width: 100%;
-    height: 200svh;
+    height: 200%;
     /* border: 3px solid blue; */
+}
+.projects-height{
+    height: 50%;
 }
 .slider-container{
     height: 100%;
@@ -89,7 +98,7 @@ html, body{
 }
 .slide{
     height: 100%;
-    width: 25svw; /* cutoff of last slide because of scrollbar */
+    width: 25vw; /* cutoff of last slide because of scrollbar */
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -142,7 +151,7 @@ html, body{
 #identity{
     position: relative;
     width: 100%;
-    height: 100svh; 
+    height: 100%; 
     background-color: black;
 }
 .identity-container{
@@ -184,18 +193,24 @@ html, body{
 
 @media screen and (max-width: 1100px){
     #projects{
-        height: 400svh;
+        height: 400%;
+    }
+    .projects-height{
+        height: 25%;
     }
     .slide{
-        width: 50svw;
+        width: 50vw;
     }
 }
 @media screen and (max-width: 600px){
     #projects{
-        height: 800svh;
+        height: 800%;
+    }
+    .projects-height{
+        height: 12.5%;
     }
     .slide{
-        width: 100svw;
+        width: 100vw;
     }
     .identity-text span{
         margin: 0 .8rem;

@@ -156,7 +156,7 @@ function animateSlider(){
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
     let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection, enableScrollBarWidth)) 
     
-    slider.style.transform = `translateX(${translateX}svw)`
+    slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)
 }
 function animateIdentity(){
