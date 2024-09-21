@@ -23,15 +23,6 @@ let tagOptions = [
     {key: 'future', tag: '<br/>'},
 ]
 
-function setScreenSize() {
-    let vh = window.innerHeight * 0.01;
-  
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  
-  setScreenSize();
-
-  window.addEventListener('resize', () => setScreenSize());
 
 //////////////////////// dom serarch ///////////////////////////////
 
@@ -165,7 +156,7 @@ function animateSlider(){
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
     let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection, enableScrollBarWidth)) 
     
-    slider.style.transform = `translateX(${translateX}svw)`
+    slider.style.transform = `translateX(${translateX}vw)`
     animateSlideImgs(target, currentPos.projects)
 }
 function animateIdentity(){
