@@ -31,6 +31,7 @@ function setScreenSize() {
   
   setScreenSize();
 
+  window.addEventListener('resize', () => setScreenSize());
 
 //////////////////////// dom serarch ///////////////////////////////
 
