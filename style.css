@@ -144,6 +144,8 @@ html, body{
     background-color: black;
 }
 .identity-container{
+    max-width: 100%;
+    overflow-x: hidden;
     height: 100%; 
     text-transform: uppercase;
 }
