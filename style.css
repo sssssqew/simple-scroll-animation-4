@@ -20,7 +20,7 @@ main{
     width: 100%;
     height: 100%;
     overflow-y: scroll; /* scroll inner element in html, body */
-    border: 5px solid red;
+    /* border: 5px solid red; */
 }
 .sticky{
     position: sticky; top: 0;

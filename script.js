@@ -1,5 +1,6 @@
 import { 
     getScrollPortion, 
+    getTotalScrollAmount,
     getScrollAmount,
     getScrollBarWidth, 
     converPxToViewport,
@@ -14,7 +15,7 @@ import { projects } from "./assets/js/list.js"
 /////////////////// global variables ///////////////////////////////////
 
 // positions of sections 
-const currentPos = { // 추후 확장
+const currentPos = { 
     hero: 0, // current position of heroSection 
     projects: 0,
 }
@@ -133,7 +134,7 @@ function move3dText(e){
 /////////////// animation functions //////////////////////
 
 function animateImage(){
-    let target = getScrollPortion(heroSection)
+    let target = getScrollPortion(heroSection, false, main) // this animation need not adding scrollbar width
     currentPos.hero = lerp(currentPos.hero, target, 0.1)
     let scale = Math.abs(currentPos.hero) < 0.1 ? 0.1 : Math.abs(currentPos.hero) // 0.1 ~ 1
     let rotate = (1 + currentPos.hero) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
@@ -154,9 +155,9 @@ function animateSlideImgs(target, current){
 }
 function animateSlider(){
     let enableScrollBarWidth = true // it has vertical scrollbar when scrolling horizontally, so slider should move more by the amount of scrollbar width
-    let target = getScrollPortion(projectSection, enableScrollBarWidth)
+    let target = getScrollPortion(projectSection, enableScrollBarWidth, main) // main has scrollbar
     currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = currentPos.projects * converPxToViewport(getScrollAmount(projectSection, enableScrollBarWidth)) 
+    let translateX = currentPos.projects * converPxToViewport(getTotalScrollAmount(projectSection, enableScrollBarWidth, main)) // main has scrollbar 
     
     slider.style.transform = `translateX(${translateX}svw)`
     animateSlideImgs(target, currentPos.projects)
@@ -174,9 +175,7 @@ function animateIdentity(){
         }, identityLetters.length * 50)
     }
 }
-function init(){
-    main.style.height = `${document.body.scrollHeight}px`
-}
+
 function animate(){
     animateImage()
     animateAbout()
@@ -184,9 +183,9 @@ function animate(){
     animateIdentity()
     requestAnimationFrame(animate)
 }
-// init()
+
 animate()
-console.log(getScrollBarWidth())
+console.log(getScrollBarWidth(main))
 
 
 

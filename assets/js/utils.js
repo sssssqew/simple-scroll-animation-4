@@ -1,23 +1,22 @@
 // utils functions 
-function getScrollPortion(element, enableScrollBarWidth = false){ // if element has sticky sections, use this function
+function getScrollPortion(element, enableScrollBarWidth, elementHasScrollbar){ // if element has sticky sections, use this function
     let portion = 0
     let {top} = element.getBoundingClientRect()
 
     if(top <= 0){
-        portion = top / getScrollAmount(element, enableScrollBarWidth) 
+        portion = top / getTotalScrollAmount(element, enableScrollBarWidth, elementHasScrollbar)
         portion = portion < -1 ? -1 : portion // 0 ~ -1  
     }
     return portion
 }
-function getScrollAmount(element, enableScrollBarWidth){
-    return element.scrollHeight - window.innerHeight + (enableScrollBarWidth ? getScrollBarWidth() : 0) // compensate by the amount of scrollbar width
+function getTotalScrollAmount(element, enableScrollBarWidth = false, elementHasScrollbar){
+    return getScrollAmount(element) + (enableScrollBarWidth ? getScrollBarWidth(elementHasScrollbar) : 0) // compensate by the amount of scrollbar width
 }
-function getScrollBarWidth(){
-    let scrollbarWidth = window.innerWidth - document.documentElement.clientWidth // if html, body has no position: fixed, overflow-y: auto 
-    if(scrollbarWidth === 0){
-        scrollbarWidth = window.innerWidth - document.body.clientWidth // if html, body has position: fixed, overflow-y: auto 
-    }
-    return scrollbarWidth
+function getScrollAmount(element){
+    return element.scrollHeight - window.innerHeight 
+}
+function getScrollBarWidth(elementHasScrollbar = document.documentElement){
+    return window.innerWidth - elementHasScrollbar.clientWidth // if html, body has no position: fixed, overflow-y: auto 
 }
 function converPxToViewport(px, option = 'vh'){
     if(option === 'vh'){
@@ -45,6 +44,7 @@ function delay(duration){
 
 export {
     getScrollPortion,
+    getTotalScrollAmount,
     getScrollAmount,
     getScrollBarWidth,
     converPxToViewport,
