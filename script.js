@@ -25,6 +25,8 @@ let tagOptions = [
 
 
 //////////////////////// dom serarch ///////////////////////////////
+// main element
+const main = document.querySelector('main')
 
 // hero section
 const heroSection = document.getElementById('hero')
@@ -172,6 +174,9 @@ function animateIdentity(){
         }, identityLetters.length * 50)
     }
 }
+function init(){
+    main.style.height = `${main.scrollHeight}px`
+}
 function animate(){
     animateImage()
     animateAbout()
@@ -179,7 +184,9 @@ function animate(){
     animateIdentity()
     requestAnimationFrame(animate)
 }
+// init()
 animate()
+console.log(getScrollBarWidth())
 
 
 

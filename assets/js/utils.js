@@ -13,7 +13,11 @@ function getScrollAmount(element, enableScrollBarWidth){
     return element.scrollHeight - window.innerHeight + (enableScrollBarWidth ? getScrollBarWidth() : 0) // compensate by the amount of scrollbar width
 }
 function getScrollBarWidth(){
-    return window.innerWidth - document.documentElement.offsetWidth
+    let scrollbarWidth = window.innerWidth - document.documentElement.clientWidth // if html, body has no position: fixed, overflow-y: auto 
+    if(scrollbarWidth === 0){
+        scrollbarWidth = window.innerWidth - document.body.clientWidth // if html, body has position: fixed, overflow-y: auto 
+    }
+    return scrollbarWidth
 }
 function converPxToViewport(px, option = 'vh'){
     if(option === 'vh'){
