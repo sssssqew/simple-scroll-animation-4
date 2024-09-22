@@ -7,10 +7,9 @@ html, body{
     scroll-behavior: smooth;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: fixed; /* for mobile to fix screen and prevent address bar moving */
     inset: 0;
-    overflow: hidden;
-    /* border: 3px solid red; */
+    overflow: hidden; /* for mobile to fix screen and prevent address bar moving */
 }
 
 /* body::-webkit-scrollbar{
@@ -20,12 +19,12 @@ main{
     position: relative;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
-    /* border: 5px solid blue; */
+    overflow-y: scroll; /* scroll inner element in html, body */
+    border: 5px solid red;
 }
 .sticky{
     position: sticky; top: 0;
-    height: 100vh;
+    height: 100svh;
 }
 .text{
     font-size: clamp(2rem, 10cqi, 10rem);
@@ -40,7 +39,7 @@ main{
 #hero{
     position: relative;
     width: 100%;
-    height: 200vh;
+    height: 200svh;
     /* border: 1px solid red; */
 }
 
@@ -61,7 +60,7 @@ main{
 #about{
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100svh;
 }
 .about-container{
     position: absolute;
@@ -83,7 +82,7 @@ main{
 #projects{
     position: relative;
     width: 100%;
-    height: 200vh;
+    height: 200svh;
     /* border: 3px solid blue; */
 }
 .slider-container{
@@ -154,7 +153,7 @@ main{
 #identity{
     position: relative;
     width: 100%;
-    height: 100vh; 
+    height: 100svh; 
     background-color: black;
 }
 .identity-container{
@@ -196,7 +195,7 @@ main{
 
 @media screen and (max-width: 1100px){
     #projects{
-        height: 400vh;
+        height: 400svh;
     }
     .slide{
         width: 50vw;
@@ -204,7 +203,7 @@ main{
 }
 @media screen and (max-width: 600px){
     #projects{
-        height: 800vh;
+        height: 800svh;
     }
     .slide{
         width: 100vw;
