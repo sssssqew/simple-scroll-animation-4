@@ -12,7 +12,7 @@ html, body{
     overflow: hidden; /* for mobile to fix screen and prevent address bar moving */
 }
 
-/* body::-webkit-scrollbar{
+/* main::-webkit-scrollbar{
     display: none;
 } */
 main{
