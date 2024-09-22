@@ -128,15 +128,25 @@ function move3dText(e){
         letter.style.transform = `perspective(3000px) translateX(50px) translateY(-100px) translateZ(${parseFloat(translatez.toFixed(1))}px)`
     })
 }
+function stop3dText(){
+    identityLetters.forEach((letter, idx) => {  
+        letter.style.transform = `translateX(0) translateY(0) translateZ(0)`
+    })
+}
 function move3dTextMobile(e){
-    console.log(e.changedTouches[0].clientX)
+    // console.log(e.changedTouches[0].clientX)
     identityLetters.forEach((letter, idx) => {  
         const {left, top, width, height} = letter.getBoundingClientRect()
         const dist = getDistance(e.changedTouches[0].clientX, e.changedTouches[0].clientY, left + width / 2, top + height / 2)
         
-        let translatez = 300000 * (1 / (dist + 1)); // dist가 작을수록 가중치 증가
-        translatez = translatez > 2000 ? 2000 : translatez < 0 ? 0 : translatez
-        letter.style.transform = `perspective(3000px) translateX(50px) translateY(-100px) translateZ(${parseFloat(translatez.toFixed(1))}px)`
+        let translatez = 100000 * (1 / (dist + 1)); // dist가 작을수록 가중치 증가
+        translatez = translatez > 1500 ? 1500 : translatez < 0 ? 0 : translatez
+        letter.style.transform = `perspective(3000px) translateX(30px) translateY(-60px) translateZ(${parseFloat(translatez.toFixed(1))}px)`
+    })
+}
+function stop3dTextMobile(){
+    identityLetters.forEach((letter, idx) => {  
+        letter.style.transform = `translateX(0) translateY(0) translateZ(0)`
     })
 }
 
@@ -185,8 +195,10 @@ function animateIdentity(){
             identityText.classList.add('active')
             if(!checkIsMobile()){
                 identitySection.addEventListener('mousemove', move3dText)
+                identitySection.addEventListener('mouseleave', stop3dText)
             }else{
                 identitySection.addEventListener('touchmove', move3dTextMobile)
+                identitySection.addEventListener('touchend', stop3dTextMobile)
             }
         }, identityLetters.length * 50)
     }
