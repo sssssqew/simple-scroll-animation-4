@@ -175,7 +175,7 @@ function animateIdentity(){
     }
 }
 function init(){
-    main.style.height = `${main.scrollHeight}px`
+    main.style.height = `${document.body.scrollHeight}px`
 }
 function animate(){
     animateImage()
