@@ -184,8 +184,7 @@ function animateSlideImgs(target, current){
 function animateSlider(){
     let target = getScrollPortion(projectSection, elementInfos.projects.totalScrollAmount) // main has scrollbar
     elementInfos.projects.current = lerp(elementInfos.projects.current, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = elementInfos.projects.current * elementInfos.projects.sliderSize // main has scrollbar 
-    
+    let translateX = (elementInfos.projects.current * elementInfos.projects.sliderSize).toFixed(3) // main has scrollbar 
     slider.style.transform = `translateX(${translateX}svw)`
     animateSlideImgs(target, elementInfos.projects.current)
 }
