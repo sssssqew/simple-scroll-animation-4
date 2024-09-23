@@ -8,7 +8,8 @@ import {
     getDistance,
     lerp,
     delay,
-    checkIsMobile
+    checkIsMobile,
+    isPlaying
 } from "./assets/js/utils.js"
 import { projects } from "./assets/js/list.js"
 
@@ -16,9 +17,9 @@ import { projects } from "./assets/js/list.js"
 /////////////////// global variables ///////////////////////////////////
 
 // positions of sections 
-const currentPos = { 
-    hero: 0, // current position of heroSection 
-    projects: 0,
+const elementInfos = { 
+    hero: {current: 0, totalScrollAmount: 0}, 
+    projects: {current: 0, totalScrollAmount: 0, sliderSize: 0},
 }
 let tagOptions = [
     {key: 'the', tag: '<br/>'},
@@ -146,15 +147,25 @@ function move3dTextMobile(e){
 }
 
 
+/////////////// init functions ///////////////////////////
+function initImage(){
+    elementInfos.hero.totalScrollAmount = getTotalScrollAmount(heroSection, false, main)
+}
+function initSlider(){
+    elementInfos.projects.totalScrollAmount = getTotalScrollAmount(projectSection, true, main) // it has vertical scrollbar when scrolling horizontally, so slider should move more by the amount of scrollbar width
+    elementInfos.projects.sliderSize = converPxToViewport(elementInfos.projects.totalScrollAmount)
+    elementInfos.projects.slideRangeOfImg = -getRangeOfSlideImage(slideImgs[0])
+}
+
 
 
 /////////////// animation functions //////////////////////
 
 function animateImage(){
-    let target = getScrollPortion(heroSection, false, main) // this animation need not adding scrollbar width
-    currentPos.hero = lerp(currentPos.hero, target, 0.1)
-    let scale = Math.abs(currentPos.hero) < 0.1 ? 0.1 : Math.abs(currentPos.hero) // 0.1 ~ 1
-    let rotate = (1 + currentPos.hero) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
+    let target = getScrollPortion(heroSection, elementInfos.hero.totalScrollAmount) // this animation need not adding scrollbar width
+    elementInfos.hero.current = lerp(elementInfos.hero.current, target, 0.1)
+    let scale = Math.abs(elementInfos.hero.current) < 0.1 ? 0.1 : Math.abs(elementInfos.hero.current) // 0.1 ~ 1
+    let rotate = (1 + elementInfos.hero.current) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
     heroImg.style.transform = `scale(${scale}) rotate(${rotate}deg)`
 }
 async function animateAbout(){
@@ -165,19 +176,18 @@ async function animateAbout(){
 function animateSlideImgs(target, current){
     let skewDiff = ((target - current) * 50).toFixed(3) 
     slideImgs.forEach((slideImg, idx) => {
-        let left = parseFloat(((1 + currentPos.projects) * -getRangeOfSlideImage(slideImg)).toFixed(1)) // -30 ~ 0 / use toFixed function to enhance performance
+        let left = parseFloat(((1 + current) * elementInfos.projects.slideRangeOfImg).toFixed(1)) // -30 ~ 0 / use toFixed function to enhance performance
         slideImg.style.left = `${left}px`
         slideImg.parentElement.style.transform = `skewX(${skewDiff}deg)`
     })
 }
 function animateSlider(){
-    let enableScrollBarWidth = true // it has vertical scrollbar when scrolling horizontally, so slider should move more by the amount of scrollbar width
-    let target = getScrollPortion(projectSection, enableScrollBarWidth, main) // main has scrollbar
-    currentPos.projects = lerp(currentPos.projects, target, 0.05) // 0.05 : the less, the smoother
-    let translateX = currentPos.projects * converPxToViewport(getTotalScrollAmount(projectSection, enableScrollBarWidth, main)) // main has scrollbar 
+    let target = getScrollPortion(projectSection, elementInfos.projects.totalScrollAmount) // main has scrollbar
+    elementInfos.projects.current = lerp(elementInfos.projects.current, target, 0.05) // 0.05 : the less, the smoother
+    let translateX = elementInfos.projects.current * elementInfos.projects.sliderSize // main has scrollbar 
     
     slider.style.transform = `translateX(${translateX}svw)`
-    animateSlideImgs(target, currentPos.projects)
+    animateSlideImgs(target, elementInfos.projects.current)
 }
 function animateIdentity(){
     if(isTouchedOnBrowser(identitySection, window.innerHeight * 0.3)){
@@ -199,6 +209,11 @@ function animateIdentity(){
     }
 }
 
+function init(){
+    initImage()
+    initSlider()
+}
+
 function animate(){
     animateImage()
     animateAbout()
@@ -207,8 +222,12 @@ function animate(){
     requestAnimationFrame(animate)
 }
 
+init()
 animate()
-console.log(getScrollBarWidth(main))
+// console.log(getScrollBarWidth(main))
+
+window.addEventListener('resize', init)
+
 
 
 

@@ -1,13 +1,11 @@
 // utils functions 
-function getScrollPortion(element, enableScrollBarWidth, elementHasScrollbar){ // if element has sticky sections, use this function
-    let portion = 0
+function getScrollPortion(element, totalScrollAmount){ // if element has sticky sections, use this function
     let {top} = element.getBoundingClientRect()
+    
+    if(top > 0) return 0
+    if(top + totalScrollAmount < 0) return -1
 
-    if(top <= 0){
-        portion = top / getTotalScrollAmount(element, enableScrollBarWidth, elementHasScrollbar)
-        portion = portion < -1 ? -1 : portion // 0 ~ -1  
-    }
-    return portion
+    return top / totalScrollAmount
 }
 function getTotalScrollAmount(element, enableScrollBarWidth = false, elementHasScrollbar){
     return getScrollAmount(element) + (enableScrollBarWidth ? getScrollBarWidth(elementHasScrollbar) : 0) // compensate by the amount of scrollbar width
@@ -49,6 +47,9 @@ function checkIsMobile(){
         return false 
     }
 }
+function isPlaying(num){
+    return num <= 0 && num >= -1
+}
 
 
 export {
@@ -61,5 +62,6 @@ export {
     getDistance,
     lerp,
     delay,
-    checkIsMobile
+    checkIsMobile,
+    isPlaying
 }
