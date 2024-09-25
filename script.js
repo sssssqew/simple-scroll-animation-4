@@ -191,7 +191,7 @@ async function animateSlider(){
     let translateX = (elementInfos.projects.current * elementInfos.projects.sliderSize).toFixed(3) // main has scrollbar 
     slider.style.transform = `translateX(${translateX}svw)`
     animateSlideImgs(target, elementInfos.projects.current)
-    await delay(1000)
+    await delay(10)
 }
 function animateIdentity(){
     if(isTouchedOnBrowser(identitySection, window.innerHeight * 0.3)){
