@@ -176,9 +176,9 @@ async function animateAbout(){
     }
 }
 function animateSlideImgs(target, current){
-    let skewDiff = ((target - current) * 50).toFixed(1) 
+    let skewDiff = (target - current) * 50
     slideImgs.forEach((slideImg, idx) => {
-        let left = ((1 + current) * elementInfos.projects.slideRangeOfImg).toFixed(1) // -30 ~ 0 / use toFixed function to enhance performance
+        let left = (1 + current) * elementInfos.projects.slideRangeOfImg // -30 ~ 0 / use toFixed function to enhance performance
         slideImg.style.left = `${left}px`
         slideImg.parentElement.style.transform = `skewX(${skewDiff}deg)`
     })
@@ -191,7 +191,7 @@ async function animateSlider(){
     let translateX = (elementInfos.projects.current * elementInfos.projects.sliderSize).toFixed(3) // main has scrollbar 
     slider.style.transform = `translateX(${translateX}svw)`
     animateSlideImgs(target, elementInfos.projects.current)
-    await delay(10)
+    await delay(2000)
 }
 function animateIdentity(){
     if(isTouchedOnBrowser(identitySection, window.innerHeight * 0.3)){
