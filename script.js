@@ -176,7 +176,7 @@ async function animateAbout(){
     }
 }
 function animateSlideImgs(target, current){
-    let skewDiff = ((target - current) * 50).toFixed(3) 
+    let skewDiff = (target - current) * 50
     slideImgs.forEach((slideImg, idx) => {
         let left = (1 + current) * elementInfos.projects.slideRangeOfImg // -30 ~ 0 / use toFixed function to enhance performance
         slideImg.style.left = `${left}px`
