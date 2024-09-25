@@ -47,8 +47,8 @@ function checkIsMobile(){
         return false 
     }
 }
-function isPlaying(num){
-    return num <= 0 && num >= -1
+function isNotShowing(scrollPortion){
+    return Math.abs(0 - scrollPortion) < Math.exp(-10) || Math.abs(-1 - scrollPortion) < Math.exp(-10)
 }
 
 
@@ -63,5 +63,5 @@ export {
     lerp,
     delay,
     checkIsMobile,
-    isPlaying
+    isNotShowing
 }

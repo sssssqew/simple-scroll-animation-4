@@ -9,7 +9,7 @@ import {
     lerp,
     delay,
     checkIsMobile,
-    isPlaying
+    isNotShowing
 } from "./assets/js/utils.js"
 import { projects } from "./assets/js/list.js"
 
@@ -164,6 +164,8 @@ function initSlider(){
 function animateImage(){
     let target = getScrollPortion(heroSection, elementInfos.hero.totalScrollAmount) // this animation need not adding scrollbar width
     elementInfos.hero.current = lerp(elementInfos.hero.current, target, 0.1)
+    if(isNotShowing(elementInfos.hero.current)) return // if this section is not showing, then don't play animation
+
     let scale = Math.abs(elementInfos.hero.current) < 0.1 ? 0.1 : Math.abs(elementInfos.hero.current) // 0.1 ~ 1
     let rotate = (1 + elementInfos.hero.current) * -240 // -240 ~ 0 // Math.floor 를 적용하면 이미지가 회전할때 뚝뚝 끊기면서 떨림현상이 발생함
     heroImg.style.transform = `scale(${scale}) rotate(${rotate}deg)`
@@ -184,6 +186,8 @@ function animateSlideImgs(target, current){
 function animateSlider(){
     let target = getScrollPortion(projectSection, elementInfos.projects.totalScrollAmount) // main has scrollbar
     elementInfos.projects.current = lerp(elementInfos.projects.current, target, 0.05) // 0.05 : the less, the smoother
+    if(isNotShowing(elementInfos.projects.current)) return // if this section is not showing, then don't play animation
+    
     let translateX = (elementInfos.projects.current * elementInfos.projects.sliderSize).toFixed(3) // main has scrollbar 
     slider.style.transform = `translateX(${translateX}svw)`
     animateSlideImgs(target, elementInfos.projects.current)
