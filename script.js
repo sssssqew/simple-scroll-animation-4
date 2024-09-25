@@ -185,7 +185,7 @@ function animateSlideImgs(target, current){
 }
 async function animateSlider(){
     let target = getScrollPortion(projectSection, elementInfos.projects.totalScrollAmount) // main has scrollbar
-    elementInfos.projects.current = lerp(elementInfos.projects.current, target, 0.03) // 0.05 : the less, the smoother
+    elementInfos.projects.current = lerp(elementInfos.projects.current, target, 0.2) // 0.05 : the less, the smoother
     if(isNotShowing(elementInfos.projects.current)) return // if this section is not showing, then don't play animation
     
     let translateX = (elementInfos.projects.current * elementInfos.projects.sliderSize).toFixed(3) // main has scrollbar 
