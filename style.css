@@ -190,6 +190,63 @@ main{
     transform: translateY(0);
     transition: .5s ease-out;
 }
+/* 3d image slider section */
+#slider-3d{
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    /* border: 3px solid red; */
+}
+.slider-container-3d{
+    height: 100%;
+    overflow: hidden;
+    background-color: black;
+}
+.slider-3d{
+    height: 100%;
+    overflow: hidden;
+    width: min-content;
+    display: flex;
+    justify-content: flex-start;
+    will-change: transform;
+    transition: 1s linear;
+    transform: translate3d(0, 0, 0);
+}
+.slide-3d{
+    position: relative;
+    height: 100%;
+    width: 100vw;
+    overflow: hidden; 
+    transition: 1s linear;
+    will-change: transform;
+}
+.slide-3d img{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center; 
+    /* border: 5px solid blue;   */
+}
+.slide-3d:nth-child(1){
+    transform-origin: right; /* 요소의 위쪽 중앙을 기준으로 변화 */
+    transform: rotateY(0);
+}
+.slide-3d:nth-child(2){
+    transform-origin: left; /* 요소의 위쪽 중앙을 기준으로 변화 */
+    transform: rotateY(90deg);
+}
+.slider-container-3d:hover .slide-3d:nth-child(1){
+    transform: rotateY(-90deg);
+}
+.slider-container-3d:hover .slide-3d:nth-child(2){
+    transform: rotateY(0deg);
+    
+}
+.slider-container-3d:hover .slider-3d{
+    transform: translate3d(-50%, 0, 0);
+}
+
 
 
 
