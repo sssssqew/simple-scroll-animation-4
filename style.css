@@ -209,7 +209,7 @@ main{
     display: flex;
     justify-content: flex-start;
     will-change: transform;
-    transition: 1s linear;
+    transition: 1.5s linear;
     transform: translate3d(0, 0, 0);
 }
 .slide-3d{
@@ -217,7 +217,7 @@ main{
     height: 100%;
     width: 100vw;
     overflow: hidden; 
-    transition: 1s linear;
+    transition: 1.5s linear;
     will-change: transform;
 }
 .slide-3d img{
