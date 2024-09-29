@@ -164,6 +164,7 @@ function move3dTextMobile(e){
     })
 }
 function start3Dslider(e){
+
     if(isPlaying) return 
     e.preventDefault() // for mouseup event working 
     isDown = true 
@@ -171,6 +172,7 @@ function start3Dslider(e){
     elementInfos.slider3d.startX = e.clientX
 }
 function end3Dslider(e){
+
     if(isPlaying) return
     e.preventDefault() // for mouseup event working  
 
@@ -234,9 +236,11 @@ function end3Dslider(e){
         }else if(elementInfos.slider3d.mouseTotalDist > 0){ 
             console.log('트랜지션 오른쪽')
             slider3D.style.transform = 'translate3d(-100vw, 0, 0)'
-        }   
+        }  
         isPlaying = true
         setTimeout(async () => { // wait until slide go back to original position
+            slide3ds[0].style.transform = 'rotateY(0)' // even if you pull slide a little bit, one of slide changes degree, so when mouse up, slide go back to zero degree
+            slide3ds[1].style.transform = 'rotateY(0)' 
             isPlaying = false
         }, 1500)
     }
@@ -262,10 +266,18 @@ function execute3Dslider(e){
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index+1 > elementInfos.slider3d.totalSlides ? 1 : elementInfos.slider3d.index+1}.jpg`
         slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist * 0.3}px, 0, 0)`   
+        
+        const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90 // rotate by the percentage of distance at total degree 90
+        slide3ds[0].style.transform = `rotateY(0)`
+        slide3ds[1].style.transform = `rotateY(${90 + degToMove}deg)` // change degree of only pulling slide
     }else if(elementInfos.slider3d.mouseTotalDist > 0){
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index-1 < 1 ? elementInfos.slider3d.totalSlides : elementInfos.slider3d.index-1}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
         slider3D.style.transform = `translate3d(${-100 + 0.3 * converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
+    
+        const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90
+        slide3ds[0].style.transform = `rotateY(${-90 + degToMove}deg)` // change degree of only pulling slide
+        slide3ds[1].style.transform = `rotateY(0)`
     }      
 }
 
@@ -343,6 +355,7 @@ function animateSlider3D(){
         if(!checkIsMobile()){
             slider3DSection.addEventListener('mousedown', start3Dslider)
             slider3DSection.addEventListener('mouseup', end3Dslider)
+            slider3DSection.addEventListener('mouseleave', end3Dslider)
             slider3DSection.addEventListener('mousemove', execute3Dslider)
         }else{
             console.log('모바일')
