@@ -164,19 +164,22 @@ function move3dTextMobile(e){
     })
 }
 function start3Dslider(e){
-    e.preventDefault() // for mouseup event working 
     if(isPlaying) return 
+    e.preventDefault() // for mouseup event working 
     isDown = true 
     slider3D.style.cursor = 'grabbing'
     elementInfos.slider3d.startX = e.clientX
 }
 function end3Dslider(e){
-    e.preventDefault() // for mouseup event working 
-    if(isPlaying) return 
+    if(isPlaying) return
+    e.preventDefault() // for mouseup event working  
 
     isDown = false 
     slider3D.style.cursor = 'grab'
     slider3D.style.transition = '1.5s linear'
+
+    // if you dont have this code, if you drag after click, it does not work for 1.5s 
+    if(elementInfos.slider3d.mouseTotalDist === 0) return // if you just click, dont need to execute this function
 
     const slide3ds = slider3D.querySelectorAll('.slide-3d')
     const slides3dImgs = slider3D.querySelectorAll('.slide-3d img')
@@ -202,8 +205,8 @@ function end3Dslider(e){
                 slide3ds[0].style.transform = 'rotateY(0)'
                 slide3ds[1].style.transform = 'rotateY(0)'
                 isPlaying = false
-            }, 1700)
-        }else{                                        // right drag
+            }, 1500)
+        }else if(elementInfos.slider3d.mouseTotalDist > 0){                                        // right drag
             elementInfos.slider3d.index--
             if(elementInfos.slider3d.index < 1){
                 elementInfos.slider3d.index = elementInfos.slider3d.totalSlides
@@ -216,47 +219,53 @@ function end3Dslider(e){
             slide3ds[1].style.transform = 'rotateY(90deg)'
             isPlaying = true
 
-            setTimeout(async () => {
+            setTimeout(async () => { // wait until slide is over completely 
                 slide3ds[0].style.transform = 'rotateY(0)'
                 slide3ds[1].style.transform = 'rotateY(0)'
-                isPlaying = false
-            }, 1700)
+                isPlaying = false // prevent for user from dragging while
+            }, 1500)
         }
-        
-
-    }else{
-        slider3D.style.transition = '1.5s linear'
+    }else{     
+        // if elementInfos.slider3d.mouseTotalDist is zero, also execute translate3d(-100vw, 0, 0)
+        // but if elementInfos.slider3d.mouseTotalDist is zero, user just click, not dragging, so slide dose not have to go back to original position
         if(elementInfos.slider3d.mouseTotalDist < 0){
+            console.log('트랜지션 왼쪽')
             slider3D.style.transform = 'translate3d(0, 0, 0)'
-        }else{
+        }else if(elementInfos.slider3d.mouseTotalDist > 0){ 
+            console.log('트랜지션 오른쪽')
             slider3D.style.transform = 'translate3d(-100vw, 0, 0)'
-        }
+        }   
+        isPlaying = true
+        setTimeout(async () => { // wait until slide go back to original position
+            isPlaying = false
+        }, 1500)
     }
     elementInfos.slider3d.mouseTotalDist = 0
-    
 }
 function execute3Dslider(e){
-    e.preventDefault() // for mouseup event working 
+
     if(isPlaying) return 
     if(!isDown) return 
 
-
+    e.preventDefault() // for mouseup event working 
     const slide3ds = slider3D.querySelectorAll('.slide-3d')
     const slides3d = slider3D.querySelectorAll('.slide-3d img')
+    slider3D.style.transition = 'none'
     slide3ds[0].style.transition = 'none'
     slide3ds[1].style.transition = 'none'
-    slider3D.style.transition = 'none'
+
      
-    elementInfos.slider3d.mouseTotalDist = e.clientX - elementInfos.slider3d.startX
-        
+    elementInfos.slider3d.mouseTotalDist = (e.clientX - elementInfos.slider3d.startX)
+    
+    // 0.3 : delay of moving slide
     if(elementInfos.slider3d.mouseTotalDist < 0){ // left drag
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index+1 > elementInfos.slider3d.totalSlides ? 1 : elementInfos.slider3d.index+1}.jpg`
-        slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist}px, 0, 0)`   
-    }else{
+        slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist * 0.3}px, 0, 0)`   
+    }else if(elementInfos.slider3d.mouseTotalDist > 0){
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index-1 < 1 ? elementInfos.slider3d.totalSlides : elementInfos.slider3d.index-1}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
-        slider3D.style.transform = `translate3d(${-100 + converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
+        slider3D.style.transform = `translate3d(${-100 + 0.3 * converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
     }      
 }
 
