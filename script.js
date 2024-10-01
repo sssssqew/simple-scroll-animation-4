@@ -188,7 +188,7 @@ function end3Dslider(e){
     
     const currentIndex = elementInfos.slider3d.index
 
-    if(Math.abs(elementInfos.slider3d.mouseTotalDist) > window.innerWidth * 0.3){
+    if(Math.abs(elementInfos.slider3d.mouseTotalDist) > window.innerWidth * 0.15){
         if(elementInfos.slider3d.mouseTotalDist < 0){ // left drag
             elementInfos.slider3d.index++
             if(elementInfos.slider3d.index > elementInfos.slider3d.totalSlides){
@@ -228,21 +228,27 @@ function end3Dslider(e){
             }, 1500)
         }
     }else{     
+        slide3ds[0].style.transition = '1.5s linear'
+        slide3ds[1].style.transition = '1.5s linear'
+
         // if elementInfos.slider3d.mouseTotalDist is zero, also execute translate3d(-100vw, 0, 0)
         // but if elementInfos.slider3d.mouseTotalDist is zero, user just click, not dragging, so slide dose not have to go back to original position
         if(elementInfos.slider3d.mouseTotalDist < 0){
             console.log('트랜지션 왼쪽')
             slider3D.style.transform = 'translate3d(0, 0, 0)'
+            slide3ds[0].style.transform = 'rotateY(0)' // even if you pull slide a little bit, one of slide changes degree, so when mouse up, slide go back to zero degree
+            slide3ds[1].style.transform = 'rotateY(90deg)' 
         }else if(elementInfos.slider3d.mouseTotalDist > 0){ 
             console.log('트랜지션 오른쪽')
             slider3D.style.transform = 'translate3d(-100vw, 0, 0)'
-        }  
+            slide3ds[0].style.transform = 'rotateY(-90deg)' // even if you pull slide a little bit, one of slide changes degree, so when mouse up, slide go back to zero degree
+            slide3ds[1].style.transform = 'rotateY(0)'
+        }
         isPlaying = true
         setTimeout(async () => { // wait until slide go back to original position
-            slide3ds[0].style.transform = 'rotateY(0)' // even if you pull slide a little bit, one of slide changes degree, so when mouse up, slide go back to zero degree
-            slide3ds[1].style.transform = 'rotateY(0)' 
             isPlaying = false
-        }, 1500)
+        }, 1500)  
+        
     }
     elementInfos.slider3d.mouseTotalDist = 0
 }
@@ -265,19 +271,19 @@ function execute3Dslider(e){
     if(elementInfos.slider3d.mouseTotalDist < 0){ // left drag
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index+1 > elementInfos.slider3d.totalSlides ? 1 : elementInfos.slider3d.index+1}.jpg`
-        slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist * 0.3}px, 0, 0)`   
+        slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist}px, 0, 0)`   
         
         const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90 // rotate by the percentage of distance at total degree 90
-        slide3ds[0].style.transform = `rotateY(0)`
+        slide3ds[0].style.transform = `rotateY(${0 + degToMove}deg)`
         slide3ds[1].style.transform = `rotateY(${90 + degToMove}deg)` // change degree of only pulling slide
     }else if(elementInfos.slider3d.mouseTotalDist > 0){
         slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index-1 < 1 ? elementInfos.slider3d.totalSlides : elementInfos.slider3d.index-1}.jpg`
         slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
-        slider3D.style.transform = `translate3d(${-100 + 0.3 * converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
+        slider3D.style.transform = `translate3d(${-100 + converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
     
         const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90
         slide3ds[0].style.transform = `rotateY(${-90 + degToMove}deg)` // change degree of only pulling slide
-        slide3ds[1].style.transform = `rotateY(0)`
+        slide3ds[1].style.transform = `rotateY(${0 + degToMove}deg)`
     }      
 }
 
