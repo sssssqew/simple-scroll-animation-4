@@ -8,6 +8,8 @@ import {
     getDistance,
     lerp,
     delay,
+    getDistanceOfDrag,
+    getDirectOfDrag,
     checkIsMobile,
     isNotShowing
 } from "./assets/js/utils.js"
@@ -58,6 +60,8 @@ const identityLetters = identityText.querySelectorAll('span')
 // 3d image slider section
 const slider3DSection = document.getElementById('slider-3d')
 const slider3D = slider3DSection.querySelector('.slider-3d')
+let slide3ds
+let slides3dImgs
 let isDown = false
 let isPlaying = false 
 
@@ -135,6 +139,10 @@ function create3DSlides(slider){
         slider.appendChild(slide3d)
     }
 }
+function setImgSrc(element, src){
+    if(!element || element.tagName !== 'IMG') return
+    element.src = src 
+}
 
 /////////////// even listeners ///////////////////////
 function move3dText(e){
@@ -182,9 +190,6 @@ function end3Dslider(e){
 
     // if you dont have this code, if you drag after click, it does not work for 1.5s 
     if(elementInfos.slider3d.mouseTotalDist === 0) return // if you just click, dont need to execute this function
-
-    const slide3ds = slider3D.querySelectorAll('.slide-3d')
-    const slides3dImgs = slider3D.querySelectorAll('.slide-3d img')
     
     const currentIndex = elementInfos.slider3d.index
 
@@ -258,32 +263,33 @@ function execute3Dslider(e){
     if(!isDown) return 
 
     e.preventDefault() // for mouseup event working 
-    const slide3ds = slider3D.querySelectorAll('.slide-3d')
-    const slides3d = slider3D.querySelectorAll('.slide-3d img')
+   
     slider3D.style.transition = 'none'
     slide3ds[0].style.transition = 'none'
     slide3ds[1].style.transition = 'none'
 
      
-    elementInfos.slider3d.mouseTotalDist = (e.clientX - elementInfos.slider3d.startX)
+    elementInfos.slider3d.mouseTotalDist = getDistanceOfDrag(e.clientX, elementInfos.slider3d.startX)
     
-    // 0.3 : delay of moving slide
-    if(elementInfos.slider3d.mouseTotalDist < 0){ // left drag
-        slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
-        slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index+1 > elementInfos.slider3d.totalSlides ? 1 : elementInfos.slider3d.index+1}.jpg`
-        slider3D.style.transform = `translate3d(${elementInfos.slider3d.mouseTotalDist}px, 0, 0)`   
+    const currentIndex = elementInfos.slider3d.index
+    const totalSlides = elementInfos.slider3d.totalSlides
+    const distOfDrag = elementInfos.slider3d.mouseTotalDist
+    const degOfRotation = distOfDrag / window.innerWidth * 90 // rotate by the percentage of distance at total degree 90
+
+    if(getDirectOfDrag(distOfDrag) === 'left'){ 
+        setImgSrc(slides3dImgs[0], `assets/imgs/3d-slide-img-${currentIndex}.jpg`)
+        setImgSrc(slides3dImgs[1], `assets/imgs/3d-slide-img-${currentIndex+1 > totalSlides ? 1 : currentIndex+1}.jpg`) // next image
+        slider3D.style.transform = `translate3d(${distOfDrag}px, 0, 0)`   
         
-        const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90 // rotate by the percentage of distance at total degree 90
-        slide3ds[0].style.transform = `rotateY(${0 + degToMove}deg)`
-        slide3ds[1].style.transform = `rotateY(${90 + degToMove}deg)` // change degree of only pulling slide
-    }else if(elementInfos.slider3d.mouseTotalDist > 0){
-        slides3d[0].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index-1 < 1 ? elementInfos.slider3d.totalSlides : elementInfos.slider3d.index-1}.jpg`
-        slides3d[1].src = `assets/imgs/3d-slide-img-${elementInfos.slider3d.index}.jpg`
-        slider3D.style.transform = `translate3d(${-100 + converPxToViewport(elementInfos.slider3d.mouseTotalDist, 'vw')}vw, 0, 0)` 
+        slide3ds[0].style.transform = `rotateY(${0 + degOfRotation}deg)`
+        slide3ds[1].style.transform = `rotateY(${90 + degOfRotation}deg)` // change degree of only pulling slide
+    }else if(getDirectOfDrag(distOfDrag) === 'right'){
+        setImgSrc(slides3dImgs[0], `assets/imgs/3d-slide-img-${currentIndex-1 < 1 ? totalSlides : currentIndex-1}.jpg`) // previous image
+        setImgSrc(slides3dImgs[1], `assets/imgs/3d-slide-img-${currentIndex}.jpg`)
+        slider3D.style.transform = `translate3d(${-100 + converPxToViewport(distOfDrag, 'vw')}vw, 0, 0)` 
     
-        const degToMove = elementInfos.slider3d.mouseTotalDist / window.innerWidth * 90
-        slide3ds[0].style.transform = `rotateY(${-90 + degToMove}deg)` // change degree of only pulling slide
-        slide3ds[1].style.transform = `rotateY(${0 + degToMove}deg)`
+        slide3ds[0].style.transform = `rotateY(${-90 + degOfRotation}deg)` // change degree of only pulling slide
+        slide3ds[1].style.transform = `rotateY(${0 + degOfRotation}deg)`
     }      
 }
 
@@ -300,6 +306,8 @@ function initSlider(){
 }
 function initSlider3D(){
     create3DSlides(slider3D)
+    slide3ds = slider3D.querySelectorAll('.slide-3d')
+    slides3dImgs = slider3D.querySelectorAll('.slide-3d img')
 }
 
 
